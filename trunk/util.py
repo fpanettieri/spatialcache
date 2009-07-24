@@ -1,5 +1,3 @@
-import re
-
 def strToBool(str):
 	"""Converts a boolean string into a real boolean value"""
 	return (str.lower().strip() == "true")
@@ -10,4 +8,3 @@ def systemlog(text):
 	line = "Systemlog: " + text + "\n"
 	file.write(line)
 	file.close()
-    

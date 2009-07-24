@@ -4,8 +4,7 @@ from logger import Logger
 from config import Configuration
 from server import CacheServer
 from daemon import Daemon
-from patterns import Singleton
-from request.manager import RequestManager
+from tiles import TilesManager
 
 class WMSCache(Daemon):
 	"""
@@ -17,13 +16,13 @@ class WMSCache(Daemon):
 		self.logger = Logger()
 		self.config = Configuration()
 		self.server = CacheServer()
-		self.requestManager = RequestManager()
+		self.tilesManager = TilesManager()
 	
 	def configure(self, cfgfile):
 		self.config.load(cfgfile)
 		self.logger.configure(self.config.logger)
 		self.server.configure(self.config.server)
-		self.requestManager.configure(self.config.request)
+		self.tilesManager.configure(self.config.tiles)
 		
 if __name__ == '__main__':
 	
