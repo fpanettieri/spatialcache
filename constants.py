@@ -1,0 +1,8 @@
+ApplicationName = "WMSCache"
+Version = "0.9(alpha)"
+ConfigurationFile = "/etc/wmscache/configuration.xml"
+HelpFile = "help"
+DefaultTilesPath = "/tmp/wmscache"
+DefaultWMS = "http://localhost:8080/wms"
+UnexpectedError = "Unexpected error"
+RequestFailed = "Request failed: "

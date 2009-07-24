@@ -1,0 +1,4 @@
+FORMAT = "FORMAT"
+CONTENT_TYPE = "Content-type"
+ACTION = "ACTION"
+QUERY_MARK = "?"
