@@ -1,0 +1,6 @@
+APPLICATION_NAME = "WMSCache"
+VERSION = "0.9(alpha)"
+CONFIGURATION_FILE = "/etc/wmscache/configuration.xml"
+HELP_FILE = "help"
+DEFAULT_TILES_PATH = "/tmp/wmscache"
+DEFAULT_WMS = "http://localhost:8080/wms"

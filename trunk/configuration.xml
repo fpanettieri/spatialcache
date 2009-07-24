@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<Options>
+	<Server>
+		<Host>localhost</Host>
+		<Port>5001</Port>
+	</Server>
+   
+	<Logger>
+		<LogFile>/var/log/wmscache.log</LogFile>
+		<FailsafeLogFile>/tmp/wmscache.log</FailsafeLogFile>
+	    
+		<!-- In bytes, 0 = unlimited -->
+		<LogMaxLenght>0</LogMaxLenght>
+		<SMTPHost>localhost</SMTPHost>
+		<EmailSender>fpanettieri@xoomcode.com</EmailSender>
+	    
+		<!-- Comma separated list of email receivers (user1@domain.com, user2@domain.com, ...)-->
+		<EmailReceivers>fpanettieri@xoomcode.com</EmailReceivers>
+	</Logger>
+
+	<Request>
+		<WMS>http://localhost:8080/wms</WMS>
+		<TilesPath>/tmp/wmscache</TilesPath>
+	
+		<!--
+			Which parameters should be used to order cached files 
+			Parameters are case sensitive, as recommended in the RFC
+			http://www.w3.org/Protocols/rfc2616/rfc2616-sec3.html#sec3
+			-->
+		<Filters>
+			<Filter>
+				<Name>LAYERS</Name>
+				<Order>1</Order>
+				<Hash>True</Hash>
+			</Filter>
+		</Filters>
+	</Request>
+   
+</Options>
