@@ -13,10 +13,12 @@ class Configuration():
 		"""
 		xml = ETree.parse(file)
 		
+		self.general = DynamicObject()
+		self.general.daemon = strToBool(xml.find("General/Daemon").text)
+
 		self.server = DynamicObject()
 		self.server.host = xml.find("Server/Host").text
 		self.server.port = int(xml.find("Server/Port").text)
-		self.server.daemon = strToBool(xml.find("Server/Daemon").text)
 		
 		self.logger = DynamicObject()
 		self.logger.logFile = xml.find("Logger/LogFile").text

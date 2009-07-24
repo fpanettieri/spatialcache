@@ -6,7 +6,7 @@ from server import CacheServer
 from daemon import Daemon
 from tiles import TilesManager
 
-class WMSCache(Daemon):
+class SpatialCache(Daemon):
 	"""
 	Application main class
 	It has the responsibility to instantiate, initialize, and configure all
@@ -23,6 +23,8 @@ class WMSCache(Daemon):
 		self.logger.configure(self.config.logger)
 		self.server.configure(self.config.server)
 		self.tilesManager.configure(self.config.tiles)
+		if self.config.general.daemon:
+			self.daemonize()
 		
 if __name__ == '__main__':
 	
@@ -50,6 +52,6 @@ if __name__ == '__main__':
 			print VERSION
 			sys.exit()
 	
-	cache = WMSCache()
+	cache = SpatialCache()
 	cache.configure(cfgfile)
 	cache.server.start()
