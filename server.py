@@ -1,5 +1,5 @@
 from SocketServer import ThreadingTCPServer
-from request.handler import CacheRequestHandler
+from handler import CacheRequestHandler
 
 class CacheServer():
 	"""
@@ -20,4 +20,3 @@ class CacheServer():
 		"""Stop running services"""
 		if self.server_instance:
 			self.server_instance.server_close()
-		

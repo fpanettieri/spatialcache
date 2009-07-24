@@ -1,12 +1,15 @@
-from hashlib import md5
-from patterns import Monostate
 import os
-import re
-import util
+import urllib
+
+from hashlib import md5
+
+from patterns import Monostate
+from logger import Logger
 
 from constants.parameters import QUERY_MARK
+from constants.error import REQUEST_FAILED
 
-class RequestManager(Monostate):
+class TilesManager(Monostate):
 
 	def configure(self, cfg):
 		self.filters = []
@@ -15,6 +18,46 @@ class RequestManager(Monostate):
 		for filter in cfg.filters:
 			self.filters.insert(filter.order - 1, filter)
 	
+	def getTile(self, request, parameters=None):
+		"""
+		Returns the tile from the cache if it exists, if not 
+		"""
+		print "Request", request
+		tile_bytes = ""
+		
+		if not parameters:
+			parameters = self.parseParameters(request)
+			
+		tile_path = self.tilePath(request, parameters)
+		print "Tile path", tile_path
+		
+		try:
+			tile_file = open(tile_path,"r")
+			tile_bytes = tile_file.read() 
+		except:
+			try:
+				# Redirect request to WMS
+				wms_request = self.wmsRequest(request)
+				print "Redirecting", wms_request
+				tile_bytes = urllib.urlopen(wms_request).read();
+				
+				# Create the path
+				dir = os.path.dirname(tile_path)
+				if not os.path.exists(dir):
+					os.makedirs(dir)
+				
+				# Store tile in cache
+				# TODO: Handle and log name collision
+				tile_file = open(tile_path, "w")
+				tile_file.write(tile_bytes)
+				tile_file.close()
+			except IOError:
+				Logger().warning(REQUEST_FAILED + wms_request)
+		finally:
+			return tile_bytes
+			
+		
+	
 	def tilePath(self, request, parameters):
 		"""
 		Use the current configuration to convert the given request into a valid path
@@ -22,7 +65,7 @@ class RequestManager(Monostate):
 		"""
 		path = self.tilesPath
 		for filter in self.filters:
-			dir = ""
+			dir = " "
 			if parameters.has_key(filter.name):
 				dir = parameters[filter.name]
 			else:
@@ -33,8 +76,8 @@ class RequestManager(Monostate):
 			path = os.path.join(path, dir)
 		return os.path.join(path, md5(request).hexdigest()) 
 	
-	def wmsRequest(self, path):
-		return self.wms + path
+	def wmsRequest(self, request):
+		return self.wms + request
 
 	def parseParameters(self, path, post=None):
 		"""

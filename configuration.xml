@@ -18,8 +18,8 @@
 		<EmailReceivers>fpanettieri@xoomcode.com</EmailReceivers>
 	</Logger>
 
-	<Request>
-		<WMS>http://localhost:8080/wms</WMS>
+	<Tiles>
+		<WMS>http://xysurface.gisworking.com:8180/geoserver/wms</WMS>
 		<TilesPath>/tmp/wmscache</TilesPath>
 	
 		<!--
@@ -34,6 +34,6 @@
 				<Hash>True</Hash>
 			</Filter>
 		</Filters>
-	</Request>
+	</Tiles>
    
 </Options>
