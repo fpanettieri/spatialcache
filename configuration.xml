@@ -19,7 +19,7 @@
 	</Logger>
 
 	<Tiles>
-		<WMS>http://xysurface.gisworking.com:8180/geoserver/wms</WMS>
+		<WMS>http://localhost:8180/geoserver/wms</WMS>
 		<TilesPath>/tmp/wmscache</TilesPath>
 	
 		<!--
