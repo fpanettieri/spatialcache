@@ -3,6 +3,7 @@
 	<Server>
 		<Host>localhost</Host>
 		<Port>5001</Port>
+		<Daemon>True</Daemon>
 	</Server>
    
 	<Logger>

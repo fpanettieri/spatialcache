@@ -1,5 +1,5 @@
-APPLICATION_NAME = "WMSCache"
-VERSION = "0.9(alpha)"
+APPLICATION_NAME = "SpatialCache"
+VERSION = "0.1"
 CONFIGURATION_FILE = "/etc/wmscache/configuration.xml"
 HELP_FILE = "help"
 DEFAULT_TILES_PATH = "/tmp/wmscache"
