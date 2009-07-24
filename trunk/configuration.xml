@@ -1,27 +1,30 @@
 <?xml version="1.0" ?>
 <Options>
+	<General>
+		<Daemon>False</Daemon>
+	</General>
 	<Server>
 		<Host>localhost</Host>
 		<Port>5001</Port>
-		<Daemon>True</Daemon>
 	</Server>
    
 	<Logger>
-		<LogFile>/var/log/wmscache.log</LogFile>
-		<FailsafeLogFile>/tmp/wmscache.log</FailsafeLogFile>
+		<LogFile>/var/log/spatialcache.log</LogFile>
+		<FailsafeLogFile>/tmp/spatialcache.log</FailsafeLogFile>
 	    
 		<!-- In bytes, 0 = unlimited -->
 		<LogMaxLenght>0</LogMaxLenght>
 		<SMTPHost>localhost</SMTPHost>
-		<EmailSender>fpanettieri@xoomcode.com</EmailSender>
+		<EmailSender>sender@example.com</EmailSender>
 	    
 		<!-- Comma separated list of email receivers (user1@domain.com, user2@domain.com, ...)-->
-		<EmailReceivers>fpanettieri@xoomcode.com</EmailReceivers>
+		<EmailReceivers>receiver@example.com</EmailReceivers>
 	</Logger>
 
 	<Tiles>
-		<WMS>http://localhost:8180/geoserver/wms</WMS>
-		<TilesPath>/tmp/wmscache</TilesPath>
+		<WMS>http://localhost:8180</WMS>
+		<!-- <WMS>http://localhost:8180</WMS> -->
+		<TilesPath>/tmp/spatialcache</TilesPath>
 	
 		<!--
 			Which parameters should be used to order cached files 

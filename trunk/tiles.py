@@ -22,23 +22,19 @@ class TilesManager(Monostate):
 		"""
 		Returns the tile from the cache if it exists, if not 
 		"""
-		print "Request", request
 		tile_bytes = ""
 		
 		if not parameters:
 			parameters = self.parseParameters(request)
-			
 		tile_path = self.tilePath(request, parameters)
-		print "Tile path", tile_path
 		
 		try:
-			tile_file = open(tile_path,"r")
-			tile_bytes = tile_file.read() 
+			tile_file = open(tile_path, "r")
+			tile_bytes = tile_file.read()
 		except:
 			try:
 				# Redirect request to WMS
 				wms_request = self.wmsRequest(request)
-				print "Redirecting", wms_request
 				tile_bytes = urllib.urlopen(wms_request).read();
 				
 				# Create the path
@@ -65,7 +61,7 @@ class TilesManager(Monostate):
 		"""
 		path = self.tilesPath
 		for filter in self.filters:
-			dir = " "
+			dir = ""
 			if parameters.has_key(filter.name):
 				dir = parameters[filter.name]
 			else:
