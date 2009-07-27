@@ -8,3 +8,14 @@ def systemlog(text):
 	line = "Systemlog: " + text + "\n"
 	file.write(line)
 	file.close()
+
+def truncate(f, n):
+	"""
+	Truncate an float to the given length (slow) 
+	"""
+	float_value = ('%.*f' % (n + 1, f)).rstrip('.0')
+	sp = float_value.split('.')
+	ret_val = sp[0]
+	if len(sp) > 1:
+		ret_val += '.' + sp[1][:n]
+	return ret_val

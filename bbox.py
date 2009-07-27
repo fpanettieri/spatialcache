@@ -1,13 +1,34 @@
 import urllib
+from util import truncate
 
 class BBox:
-	def __init__(self, bbox_str):
+	def __init__(self):
+		self.minX = -180
+		self.minY = -90
+		self.maxX = 180
+		self.maxY = 90
+	
+	def parse (self, bbox_str):
 		limits = urllib.unquote(bbox_str).split(",")
-		self.minX = limits[0]
-		self.minY = limits[1]
-		self.maxX = limits[2]
-		self.maxY = limits[3]
+		self.minX = float(limits[0])
+		self.minY = float(limits[1])
+		self.maxX = float(limits[2])
+		self.maxY = float(limits[3])
 	
 	def zoom(self, zoom_level):
-		return []
+		tiles_total = 2**zoom_level
+		tile_width = (self.maxX - self.minX) / tiles_total 
+		tile_height = (self.maxY - self.minY) / tiles_total
+		tiles = []
 		
+		for i in xrange(tiles_total):
+			for j in xrange(tiles_total):
+				minX = self.minX + i * tile_width 
+				minY = self.minY + j * tile_height
+				maxX = minX + tile_width
+				maxY = minY + tile_height
+				tiles.append("%s,%s,%s,%s" % (_fmt(minX), _fmt(minY), _fmt(maxX), _fmt(maxY)))
+		return tiles
+	
+def _fmt(f):
+	return truncate(f, 6)
