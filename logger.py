@@ -24,7 +24,7 @@ class Logger(Singleton):
 				except:
 					fileHandler = RotatingFileHandler(cfg.failsafeLogFile, 'a', cfg.logMaxLenght)
 				fileHandler.setFormatter(formatter)
-				fileHandler.setLevel(getLogLevel(fileLogLevel))
+				fileHandler.setLevel(logLevel(fileLogLevel))
 				
 				self.log.addHandler(fileHandler)
 		
@@ -38,7 +38,7 @@ class Logger(Singleton):
 				subject_str = APPLICATION_NAME + ' error log'
 				smtpHandler = SMTPHandler(cfg.smtpHost, cfg.emailSender, cfg.emailReceivers, subject_str)
 				smtpHandler.setFormatter(formatter)
-				smtpHandler.setLevel(getLogLevel(smtpLogLevel))
+				smtpHandler.setLevel(logLevel(smtpLogLevel))
 				
 				self.log.addHandler(smtpHandler)
 		
@@ -76,7 +76,7 @@ class Logger(Singleton):
 			self.log.critical(text)
 
 
-def getLogLevel(level_str):
+def logLevel(level_str):
 	level = logging.NOTSET
 	
 	level_str = level_str.lower()

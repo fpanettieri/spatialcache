@@ -1,43 +1,42 @@
-import re
-from constants.parameters import ZOOM, BBOX
+from constants.parameters import ZOOM, BBOX, ACTION
 from bbox import BBox
 
 from tiles import TilesManager
-from threading import Thread
+from logger import Logger
+from params import ParamsDict
 
-
-class Seeder(Thread):
+class Seeder():
 	
-	def __init__ (self, parameters):
-		Thread.__init__(self)
-		self.parameters = parameters
-    
-	def run(self):
-		# How many levels should we work with
-		if parameters.has_key(ZOOM):
-			zoom = int(parameters[ZOOM])
-		else:
-			zoom = 1
-		
-		pass
+	def __init__ (self):
+		self.logger = Logger()
    	
-	def seed(self, request, parameters, zoom):
+	def seed(self, params):
 		
-		
-			
-		# Remove extra param
-		parameters.pop(ZOOM, None)
+		# How many levels should we work with
+		if params.has_key(ZOOM):
+			zoom = int(params[ZOOM])
+			self.logger.info("Seeding %d zoom levels" % zoom)
+			params.pop(ZOOM, None)
+		else:
+			self.logger.warning("Zoom level not defined")
+			zoom = 1
 		
 		# Parse bbox
 		bbox = BBox()
-		bbox.parse(parameters[BBOX])
+		bbox.parse(params[BBOX])
+		
+		# Dictionary used to make requests
+		aux_dict = ParamsDict(params.copy())
 		
 		# Generate tiles
 		tilesManager = TilesManager()
 		for i in xrange(zoom):
 			for current_bbox in bbox.zoom(i):
-				 full_request = request + current_bbox
-				 tilesManager.getTile(full_request)
+				aux_dict[BBOX] = current_bbox
+				TilesManager().getTile(aux_dict)
+
+		# FIXME: Verify if this is working
 	
-	def clean(self, request, parameters):
+	def clean(self, zoom):
+		# TODO: implement cache cleaning
 		pass

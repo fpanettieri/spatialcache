@@ -3,15 +3,12 @@ import urllib
 
 from hashlib import md5
 
-from patterns import Monostate
+from patterns import Singleton
 from logger import Logger
-from hashdict import HashDict
 
-from constants.parameters import QUERY_MARK
 from constants.error import REQUEST_FAILED
-from logger import Logger
 
-class TilesManager(Monostate):
+class TilesManager(Singleton):
 	
 	def __init__(self):
 		self.logger = Logger()
@@ -26,18 +23,15 @@ class TilesManager(Monostate):
 		for filter in cfg.filters:
 			self.filters.insert(filter.order - 1, filter)
 		self.logger.info("Filters parsed")
+		
 		self.logger.info("Tiles Manager configured")
 	
-	def getTile(self, request, parameters=None):
+	def getTile(self, params):
 		"""
 		Returns the tile from the cache if it exists, if not 
 		"""
 		tile_bytes = ""
-		
-		# GET
-		if not parameters:
-			parameters = self.parseParameters(request)
-		tile_path = self.tilePath(parameters)
+		tile_path = self.tilePath(params)
 		
 		try:
 			tile_file = open(tile_path, "r")
@@ -45,7 +39,7 @@ class TilesManager(Monostate):
 		except:
 			try:
 				# Redirect request to WMS
-				wms_request = self.wmsRequest(request)
+				wms_request = self.wms + str(params)
 				tile_bytes = urllib.urlopen(wms_request).read();
 				
 				# Create the path
@@ -62,8 +56,6 @@ class TilesManager(Monostate):
 				Logger().warning(REQUEST_FAILED + wms_request)
 		finally:
 			return tile_bytes
-			
-		
 	
 	def tilePath(self, params):
 		"""
@@ -71,38 +63,11 @@ class TilesManager(Monostate):
 		where the tile that should be stored
 		"""
 		path = self.tilesPath
-		parameters = HashDict(params)
 		for filter in self.filters:
 			dir = ""
-			if parameters.has_key(filter.name):
-				dir = parameters[filter.name]
-			else:
-				# TODO: Handle error if the filter doesn't exist in the parameters list
-				pass
+			if params.has_key(filter.name):
+				dir = params[filter.name]
 			if filter.hash:
 				dir = md5(dir).hexdigest()
 			path = os.path.join(path, dir)
-		return os.path.join(path, parameters.hash()) 
-	
-	def wmsRequest(self, request):
-		return self.wms + request
-
-	def parseParameters(self, path, post=None):
-		"""
-		Creates a dictionary of parameters
-		"""
-		# Remove prefix
-		params = path[path.find(QUERY_MARK) + 1:]
-		
-		# Concatenate request and post parameters to handle both in the same way
-		if post:
-			params += "&" + post
-		
-		# Dictionary where parameters will be stored
-		dict = {}
-		
-		for kv in params.split("&"):
-			k, v = kv.split("=")
-			dict[k] = v
-		
-		return dict
+		return os.path.join(path, params.hash()) 

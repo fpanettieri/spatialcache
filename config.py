@@ -21,7 +21,6 @@ class Configuration():
 		self.server.port = int(xml.find("Server/Port").text)
 		
 		self.logger = DynamicObject()
-		self.logger.logLevel = xml.find("Logger/LogLevel").text
 		self.logger.logFile = xml.find("Logger/LogFile").text
 		self.logger.failsafeLogFile = xml.find("Logger/FailsafeLogFile").text
 		self.logger.logMaxLenght = int(xml.find("Logger/LogMaxLenght").text)
