@@ -1,26 +1,36 @@
 import re
-from constants.parameters import ZOOM
+from constants.parameters import ZOOM, BBOX
 from bbox import BBox
 
 from tiles import TilesManager
+from threading import Thread
 
 
-class Seeder:
-	def seed(self, request, parameters):
-		
-		# How many levels should be generated
+class Seeder(Thread):
+	
+	def __init__ (self, parameters):
+		Thread.__init__(self)
+		self.parameters = parameters
+    
+	def run(self):
+		# How many levels should we work with
 		if parameters.has_key(ZOOM):
 			zoom = int(parameters[ZOOM])
 		else:
 			zoom = 1
 		
-		# Remove BBOX param from original request
-		bbox_str = re.search("BBOX=.*?(&|$)", request, re.IGNORECASE).group()
-		request = re.sub(bbox_str, "", request)
+		pass
+   	
+	def seed(self, request, parameters, zoom):
+		
+		
+			
+		# Remove extra param
+		parameters.pop(ZOOM, None)
 		
 		# Parse bbox
 		bbox = BBox()
-		bbox.parse(bbox_str)
+		bbox.parse(parameters[BBOX])
 		
 		# Generate tiles
 		tilesManager = TilesManager()
@@ -28,12 +38,6 @@ class Seeder:
 			for current_bbox in bbox.zoom(i):
 				 full_request = request + current_bbox
 				 tilesManager.getTile(full_request)
-	
-	
-	def getBBOX(self, request):
-		bbox_str = re.search("BBOX=.*?(&|$)", request, re.IGNORECASE).group()[5:]
-		return urllib.unquote(bbox_str).split(',')
-
 	
 	def clean(self, request, parameters):
 		pass

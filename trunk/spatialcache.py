@@ -21,10 +21,17 @@ class SpatialCache(Daemon):
 	def configure(self, cfgfile):
 		self.config.load(cfgfile)
 		self.logger.configure(self.config.logger)
-		self.server.configure(self.config.server)
 		self.tilesManager.configure(self.config.tiles)
+		self.server.configure(self.config.server)
 		if self.config.general.daemon:
+			self.logger.info("Running as daemon")
 			self.daemonize()
+	
+	def start(self):
+		self.server.start()
+	
+	def stop(self):
+		self.server.stop()
 		
 if __name__ == '__main__':
 	
@@ -54,4 +61,4 @@ if __name__ == '__main__':
 	
 	cache = SpatialCache()
 	cache.configure(cfgfile)
-	cache.server.start()
+	cache.start()

@@ -1,5 +1,5 @@
 import logging
-from logging.handlers import RotatingFileHandler, SMTPHandler
+from logging.handlers import SMTPHandler, RotatingFileHandler
 
 from patterns import Singleton
 from util import systemlog
@@ -9,30 +9,46 @@ from constants.general import APPLICATION_NAME
 class Logger(Singleton):
 	def configure(self, cfg):
 		"""Configures the Logger module"""
+		
 		self.configured = False
+		
 		self.log = logging.getLogger(APPLICATION_NAME)
+		formatter = logging.Formatter("%(asctime)s [%(levelname)s]: %(message)s")
+		
+		# File logger
 		try:
-			try:
-				fileHandler = RotatingFileHandler(cfg.logFile, 'a+', cfg.logMaxLenght)
-			except:
-				fileHandler = RotatingFileHandler(cfg.failsafeLogFile, 'a+', cfg.logMaxLenght)
-			fileHandler.doRollover()
-			formatter = logging.Formatter("%(levelname)s %(asctime)s: %(message)s")
-			fileHandler.setFormatter(formatter)
-			fileHandler.setLevel(logging.DEBUG)
-			self.log.addHandler(fileHandler)
+			fileLogLevel = cfg.fileLogLevel.lower()
+			if not fileLogLevel == "none":
+				try:
+					fileHandler = RotatingFileHandler(cfg.logFile, 'a', cfg.logMaxLenght)
+				except:
+					fileHandler = RotatingFileHandler(cfg.failsafeLogFile, 'a', cfg.logMaxLenght)
+				fileHandler.setFormatter(formatter)
+				fileHandler.setLevel(getLogLevel(fileLogLevel))
+				
+				self.log.addHandler(fileHandler)
+		
 		except Exception:
 			systemlog("File logger configuration failed")
 		
+		# SMTP logger
 		try:
-			subject_str = APPLICATION_NAME + ' error log'
-			smtpHandler = SMTPHandler(cfg.smtpHost, cfg.emailSender, cfg.emailReceivers, subject_str)
-			smtpHandler.setLevel(logging.ERROR)
-			smtpHandler.setFormatter(formatter)
-			self.log.addHandler(smtpHandler)
+			smtpLogLevel = cfg.smtpLogLevel.lower()
+			if not smtpLogLevel == "none":
+				subject_str = APPLICATION_NAME + ' error log'
+				smtpHandler = SMTPHandler(cfg.smtpHost, cfg.emailSender, cfg.emailReceivers, subject_str)
+				smtpHandler.setFormatter(formatter)
+				smtpHandler.setLevel(getLogLevel(smtpLogLevel))
+				
+				self.log.addHandler(smtpHandler)
+		
 		except Exception:
-			systemlog("SMTP Logger configuration failed")	
+			systemlog("SMTP Logger configuration failed")
+		
+		self.log.setLevel(logging.DEBUG)
 		self.configured = True
+		
+		self.info("Logger configured")
 	
 	def debug(self, text):
 		"""Log a debug message"""
@@ -58,3 +74,20 @@ class Logger(Singleton):
 		"""Log a critical message"""
 		if self.configured:
 			self.log.critical(text)
+
+
+def getLogLevel(level_str):
+	level = logging.NOTSET
+	
+	level_str = level_str.lower()
+	if level_str == "debug":
+		level = logging.DEBUG
+	elif level_str == "info":
+		level = logging.INFO
+	elif level_str == "warning":
+		level = logging.WARNING
+	elif level_str == "error":
+		level = logging.ERROR
+	elif level_str == "critical":
+		level = logging.CRITICAL
+	return level

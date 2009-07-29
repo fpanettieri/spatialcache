@@ -13,8 +13,8 @@ def truncate(f, n):
 	"""
 	Truncate an float to the given length (slow) 
 	"""
-	float_value = ('%.*f' % (n + 1, f)).rstrip('.0')
-	sp = float_value.split('.')
+	float_str = ('%.*f' % (n + 1, f)).rstrip('0')
+	sp = float_str.split('.')
 	ret_val = sp[0]
 	if len(sp) > 1:
 		ret_val += '.' + sp[1][:n]

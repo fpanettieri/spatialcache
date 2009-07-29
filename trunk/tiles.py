@@ -5,18 +5,28 @@ from hashlib import md5
 
 from patterns import Monostate
 from logger import Logger
+from hashdict import HashDict
 
 from constants.parameters import QUERY_MARK
 from constants.error import REQUEST_FAILED
+from logger import Logger
 
 class TilesManager(Monostate):
+	
+	def __init__(self):
+		self.logger = Logger()
 
 	def configure(self, cfg):
+		self.logger.info("Configuring Tiles Manager")
 		self.filters = []
 		self.tilesPath = cfg.tilesPath
 		self.wms = cfg.wms
+		
+		self.logger.info("Parsing filters")
 		for filter in cfg.filters:
 			self.filters.insert(filter.order - 1, filter)
+		self.logger.info("Filters parsed")
+		self.logger.info("Tiles Manager configured")
 	
 	def getTile(self, request, parameters=None):
 		"""
@@ -24,9 +34,10 @@ class TilesManager(Monostate):
 		"""
 		tile_bytes = ""
 		
+		# GET
 		if not parameters:
 			parameters = self.parseParameters(request)
-		tile_path = self.tilePath(request, parameters)
+		tile_path = self.tilePath(parameters)
 		
 		try:
 			tile_file = open(tile_path, "r")
@@ -54,12 +65,13 @@ class TilesManager(Monostate):
 			
 		
 	
-	def tilePath(self, request, parameters):
+	def tilePath(self, params):
 		"""
 		Use the current configuration to convert the given request into a valid path
 		where the tile that should be stored
 		"""
 		path = self.tilesPath
+		parameters = HashDict(params)
 		for filter in self.filters:
 			dir = ""
 			if parameters.has_key(filter.name):
@@ -70,7 +82,7 @@ class TilesManager(Monostate):
 			if filter.hash:
 				dir = md5(dir).hexdigest()
 			path = os.path.join(path, dir)
-		return os.path.join(path, md5(request).hexdigest()) 
+		return os.path.join(path, parameters.hash()) 
 	
 	def wmsRequest(self, request):
 		return self.wms + request
