@@ -14,11 +14,17 @@
 	    
 		<!-- In bytes, 0 = unlimited -->
 		<LogMaxLenght>0</LogMaxLenght>
+		
 		<SMTPHost>localhost</SMTPHost>
 		<EmailSender>sender@example.com</EmailSender>
 	    
 		<!-- Comma separated list of email receivers (user1@domain.com, user2@domain.com, ...)-->
 		<EmailReceivers>receiver@example.com</EmailReceivers>
+		
+		<!-- Log levels None, Debug, Info, Warning, Error, Critical -->
+		<LogLevel>Info</LogLevel>
+		<FileLogLevel>Info</FileLogLevel>
+		<SMTPLogLevel>None</SMTPLogLevel>
 	</Logger>
 
 	<Tiles>
