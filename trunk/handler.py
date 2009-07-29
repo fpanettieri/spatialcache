@@ -2,7 +2,8 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 
 from logger import Logger
 from tiles import TilesManager
-from seed import Seeder
+from seeder import Seeder
+from params import ParamsDict
 
 from constants.parameters import FORMAT, CONTENT_TYPE
 from constants.error import UNEXPECTED_ERROR
@@ -11,10 +12,10 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 	
 	def do_GET(self):
 		try:
-			# Parse the parameters
-			tilesManager = TilesManager()
-			parameters = tilesManager.parseParameters(self.path)
-			tile = tilesManager.getTile(self.path, parameters)
+			# Parse the parameter
+			parameters = ParamsDict()
+			parameters.parse(self.path)
+			tile = TilesManager().getTile(parameters)
 			
 			# Send headers
 			self.send_response(200)
@@ -29,14 +30,18 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 	
 	def do_POST(self):
 		try:
-			post = self.rfile.read()
+			# Get post data
+			content_length = int(self.headers["content-length"])
+			post = self.rfile.read(content_length)
 			
-			# Parse the parameters
-			tilesManager = TilesManager()
-			parameters = tilesManager.parseParameters(self.path, post)
+			# Parse the parameter
+			params = ParamsDict()
+			params.parse(post)
+			tile = TilesManager().getTile(params)
 			
-			seeder = Seeder(parameters)
-			sedder.start()
+			# Launch seeder
+			seeder = Seeder()
+			seeder.seed(params)
 			
 			# Send headers
 			self.send_response(200)

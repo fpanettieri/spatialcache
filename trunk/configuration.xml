@@ -22,14 +22,12 @@
 		<EmailReceivers>receiver@example.com</EmailReceivers>
 		
 		<!-- Log levels None, Debug, Info, Warning, Error, Critical -->
-		<LogLevel>Info</LogLevel>
 		<FileLogLevel>Info</FileLogLevel>
 		<SMTPLogLevel>None</SMTPLogLevel>
 	</Logger>
 
 	<Tiles>
-		<WMS>http://localhost:8180</WMS>
-		<!-- <WMS>http://localhost:8180</WMS> -->
+		<WMS>http://localhost:8180/wms?</WMS>
 		<TilesPath>/tmp/spatialcache</TilesPath>
 	
 		<!--

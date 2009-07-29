@@ -31,4 +31,5 @@ class BBox:
 		return tiles
 	
 def _fmt(f):
+	#TODO: make this number configurable
 	return truncate(f, 6)
