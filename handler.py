@@ -37,7 +37,6 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			# Parse the parameter
 			params = ParamsDict()
 			params.parse(post)
-			tile = TilesManager().getTile(params)
 			
 			# Launch seeder
 			seeder = Seeder()

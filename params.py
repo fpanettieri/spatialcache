@@ -36,6 +36,8 @@ class ParamsDict(dict):
 	
 	def __str__(self):
 		items = []
-		for item in self.iteritems():
+		iteritems = self.items()
+		iteritems.sort()
+		for item in iteritems:
 			items.append("=".join(item))
 		return "&".join(items)
