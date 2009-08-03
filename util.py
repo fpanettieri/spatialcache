@@ -9,13 +9,13 @@ def systemlog(text):
 	file.write(line)
 	file.close()
 
-def truncate(f, n):
+def truncate(f, n=2):
 	"""
 	Truncate an float to the given length (slow) 
 	"""
 	float_str = ('%.*f' % (n + 1, f)).rstrip('0')
 	sp = float_str.split('.')
 	ret_val = sp[0]
-	if len(sp) > 1:
+	if len(sp) > 1 and sp[1]:
 		ret_val += '.' + sp[1][:n]
 	return ret_val
