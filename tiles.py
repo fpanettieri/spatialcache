@@ -31,7 +31,8 @@ class TilesManager(Singleton):
 		Returns the tile from the cache if it exists, if not 
 		"""
 		tile_bytes = ""
-		tile_path = self.tilePath(params)
+		tile_dir = self.tileDir(params)
+		tile_path = os.path.join(tile_dir, params.hash())
 		
 		try:
 			tile_file = open(tile_path, "r")
@@ -57,17 +58,17 @@ class TilesManager(Singleton):
 		finally:
 			return tile_bytes
 	
-	def tilePath(self, params):
+	def tileDir(self, params):
 		"""
-		Use the current configuration to convert the given request into a valid path
+		Use the current configuration to convert the given parameters into a valid path
 		where the tile that should be stored
 		"""
 		path = self.tilesPath
 		for filter in self.filters:
 			dir = ""
 			if params.has_key(filter.name):
-				dir = params[filter.name]
+				dir = filter.name + "=" + params[filter.name]
 			if filter.hash:
 				dir = md5(dir).hexdigest()
 			path = os.path.join(path, dir)
-		return os.path.join(path, params.hash()) 
+		return path

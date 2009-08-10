@@ -27,7 +27,8 @@ class BBox:
 				minY = self.minY + j * tile_height
 				maxX = minX + tile_width
 				maxY = minY + tile_height
-				tiles.append("%s,%s,%s,%s" % (_fmt(minX), _fmt(minY), _fmt(maxX), _fmt(maxY)))
+				current_bbox = "%s,%s,%s,%s" % (_fmt(minX), _fmt(minY), _fmt(maxX), _fmt(maxY))
+				tiles.append(urllib.quote(current_bbox))
 		return tiles
 	
 def _fmt(f):
