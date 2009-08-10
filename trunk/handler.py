@@ -3,6 +3,7 @@ from BaseHTTPServer import BaseHTTPRequestHandler
 from logger import Logger
 from tiles import TilesManager
 from seeder import Seeder
+from cleaner import Cleaner
 from params import ParamsDict
 
 from constants.parameters import FORMAT, CONTENT_TYPE
@@ -41,6 +42,27 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			# Launch seeder
 			seeder = Seeder()
 			seeder.seed(params)
+			
+			# Send headers
+			self.send_response(200)
+			self.end_headers()
+			
+		except:
+			Logger().error(UNEXPECTED_ERROR)
+			
+	def do_DELETE(self):
+		try:
+			# Get post data
+			content_length = int(self.headers["content-length"])
+			post = self.rfile.read(content_length)
+			
+			# Parse the parameter
+			params = ParamsDict()
+			params.parse(post)
+			
+			# Launch seeder
+			cleaner = Cleaner()
+			cleaner.clean(params)
 			
 			# Send headers
 			self.send_response(200)

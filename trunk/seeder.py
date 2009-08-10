@@ -33,10 +33,4 @@ class Seeder():
 		for i in xrange(zoom):
 			for current_bbox in bbox.zoom(i):
 				aux_dict[BBOX] = current_bbox
-				TilesManager().getTile(aux_dict)
-
-		# FIXME: Verify if this is working
-	
-	def clean(self, zoom):
-		# TODO: implement cache cleaning
-		pass
+				tilesManager.getTile(aux_dict)
