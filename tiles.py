@@ -68,7 +68,7 @@ class TilesManager(Singleton):
 			dir = ""
 			if params.has_key(filter.name):
 				dir = filter.name + "=" + params[filter.name]
-			if filter.hash:
+			if filter.hash and dir != "":
 				dir = md5(dir).hexdigest()
 			path = os.path.join(path, dir)
 		return path
