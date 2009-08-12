@@ -39,6 +39,9 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			params = ParamsDict()
 			params.parse(post)
 			
+			# Log
+			Logger().info("Seeding: " + params)
+			
 			# Launch seeder
 			seeder = Seeder()
 			seeder.seed(params)
@@ -59,6 +62,9 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			# Parse the parameter
 			params = ParamsDict()
 			params.parse(post)
+			
+			# Log
+			Logger().info("Cleaning: " + params)
 			
 			# Launch seeder
 			cleaner = Cleaner()
