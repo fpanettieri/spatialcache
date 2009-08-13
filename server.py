@@ -8,7 +8,7 @@ class CacheServer():
 	different clients
 	"""	
 	def configure(self, cfg):
-		self.logger.info("Configuring Server")
+		Logger().info("Configuring Server")
 		self.host = cfg.host
 		self.port = cfg.port
 		Logger().info("Server configured")

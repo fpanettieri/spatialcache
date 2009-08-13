@@ -11,9 +11,6 @@ from params import ParamsDict
 
 class Cleaner():
 	
-	def __init__ (self):
-		self.logger = Logger()
-   	
 	def clean(self, params):
 		
 		# Get configured filters

@@ -13,18 +13,17 @@ class SpatialCache(Daemon):
 	the application services/modules
 	"""
 	def __init__(self):
-		self.logger = Logger()
 		self.config = Configuration()
 		self.server = CacheServer()
 		self.tilesManager = TilesManager()
 	
 	def configure(self, cfgfile):
 		self.config.load(cfgfile)
-		self.logger.configure(self.config.logger)
+		Logger().configure(self.config.logger)
 		self.tilesManager.configure(self.config.tiles)
 		self.server.configure(self.config.server)
 		if self.config.general.daemon:
-			self.logger.info("Running as daemon")
+			Logger().info("Running as daemon")
 			self.daemonize()
 	
 	def start(self):
