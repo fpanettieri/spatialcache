@@ -39,7 +39,7 @@
 			<Filter>
 				<Name>LAYERS</Name>
 				<Order>1</Order>
-				<Hash>True</Hash>
+				<Hash>False</Hash>
 			</Filter>
 		</Filters>
 	</Tiles>

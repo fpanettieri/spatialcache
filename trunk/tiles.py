@@ -10,21 +10,18 @@ from constants.error import REQUEST_FAILED
 
 class TilesManager(Singleton):
 	
-	def __init__(self):
-		self.logger = Logger()
-
 	def configure(self, cfg):
-		self.logger.info("Configuring Tiles Manager")
+		Logger().info("Configuring Tiles Manager")
 		self.filters = []
 		self.tilesPath = cfg.tilesPath
 		self.wms = cfg.wms
 		
-		self.logger.info("Parsing filters")
+		Logger().info("Parsing filters")
 		for filter in cfg.filters:
 			self.filters.insert(filter.order - 1, filter)
-		self.logger.info("Filters parsed")
+		Logger().info("Filters parsed")
 		
-		self.logger.info("Tiles Manager configured")
+		Logger().info("Tiles Manager configured")
 	
 	def getTile(self, params):
 		"""

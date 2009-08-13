@@ -6,19 +6,16 @@ from logger import Logger
 from params import ParamsDict
 
 class Seeder():
-	
-	def __init__ (self):
-		self.logger = Logger()
    	
 	def seed(self, params):
 		
 		# How many levels should we work with
 		if params.has_key(ZOOM):
 			zoom = int(params[ZOOM])
-			self.logger.info("Seeding %d zoom levels" % zoom)
+			Logger().info("Seeding %d zoom levels" % zoom)
 			params.pop(ZOOM, None)
 		else:
-			self.logger.warning("Zoom level not defined")
+			Logger().warning("Zoom level not defined")
 			zoom = 1
 		
 		# Parse bbox

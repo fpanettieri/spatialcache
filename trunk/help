@@ -1,4 +1,4 @@
-Usage: python wmscache.py [options]
+Usage: python spatialcache.py [options]
 	-c Config file
 	-h This help
 	-v Version
