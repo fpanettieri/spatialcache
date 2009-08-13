@@ -46,7 +46,6 @@ class TilesManager(Singleton):
 					os.makedirs(dir)
 				
 				# Store tile in cache
-				# TODO: Handle and log name collision
 				tile_file = open(tile_path, "w")
 				tile_file.write(tile_bytes)
 				tile_file.close()

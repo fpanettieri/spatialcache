@@ -7,6 +7,7 @@ from cleaner import Cleaner
 from params import ParamsDict
 
 from constants.parameters import FORMAT, CONTENT_TYPE
+from constants.actions import SEED, CLEAN, ACTION
 from constants.error import UNEXPECTED_ERROR
 
 class CacheRequestHandler(BaseHTTPRequestHandler):
@@ -39,12 +40,17 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			params = ParamsDict()
 			params.parse(post)
 			
-			# Log
-			Logger().info("Seeding: " + str(params))
+			# Check if action is defined
+			action = SEED
+			if params.has_key(ACTION):
+				Logger().info("POST Action: %s" % ACTION)
+				action = params[ACTION]
+				params.pop(ACTION, None)
 			
-			# Launch seeder
-			seeder = Seeder()
-			seeder.seed(params)
+			if action == SEED:
+				self._seed(params)
+			elif action == CLEAN:
+				self._clean(params)
 			
 			# Send headers
 			self.send_response(200)
@@ -52,7 +58,7 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			
 		except:
 			Logger().error(UNEXPECTED_ERROR)
-			
+	
 	def do_DELETE(self):
 		try:
 			# Get post data
@@ -63,16 +69,27 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			params = ParamsDict()
 			params.parse(post)
 			
-			# Log
-			Logger().info("Cleaning: " + str(params))
+			self._clean(params)
 			
-			# Launch seeder
-			cleaner = Cleaner()
-			cleaner.clean(params)
-			
-			# Send headers
+			# Send response
 			self.send_response(200)
 			self.end_headers()
 			
 		except:
 			Logger().error(UNEXPECTED_ERROR)
+	
+	def _seed(self, params):
+		Logger().info("Seeding: " + str(params))
+		
+		seeder = Seeder()
+		seeder.seed(params)
+		
+		Logger().info("Finished seeding: " + str(params))
+	
+	def _clean(self, params):
+		Logger().info("Cleaning: " + str(params))
+		
+		cleaner = Cleaner()
+		cleaner.clean(params)
+		
+		Logger().info("Finished cleaning: " + str(params))

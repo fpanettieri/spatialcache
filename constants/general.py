@@ -1,5 +1,5 @@
 APPLICATION_NAME = "SpatialCache"
-VERSION = "0.1"
+VERSION = "0.4"
 CONFIGURATION_FILE = "/etc/spatialcache/configuration.xml"
 HELP_FILE = "help"
 DEFAULT_TILES_PATH = "/tmp/spatialcache"
