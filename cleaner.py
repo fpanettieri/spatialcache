@@ -1,13 +1,7 @@
 import os
 import shutil
-import hashlib
-
-from constants.parameters import ZOOM, BBOX, ACTION
-from bbox import BBox
 
 from tiles import TilesManager
-from logger import Logger
-from params import ParamsDict
 
 class Cleaner():
 	
