@@ -1,4 +1,4 @@
-from constants.parameters import ZOOM, BBOX, ACTION
+from constants.parameters import ZOOM, BBOX
 from bbox import BBox
 
 from tiles import TilesManager
