@@ -17,16 +17,16 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			# Parse the parameter
 			parameters = ParamsDict()
 			parameters.parse(self.path)
-			tile = TilesManager().getTile(parameters)
+			tile, response_code = TilesManager().getTile(parameters)
 			
 			# Send headers
-			self.send_response(200)
+			self.send_response(response_code)
 			if parameters.has_key(FORMAT):
 				self.send_header(CONTENT_TYPE, parameters[FORMAT])
 			self.end_headers()
 			
-			# Send tile
-			self.wfile.write(tile)
+			if(response_code != 200):
+				self.wfile.write(tile)
 		except:
 			Logger().error(UNEXPECTED_ERROR)
 	
