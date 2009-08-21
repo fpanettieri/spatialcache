@@ -8,15 +8,15 @@ from params import ParamsDict
 class Seeder():
    	
 	def seed(self, params):
-		
+
 		# How many levels should we work with
 		if params.has_key(ZOOM):
-			zoom = int(params[ZOOM])
+			zoom = self.parseZoom(params[ZOOM])
 			Logger().info("Seeding %d zoom levels" % zoom)
 			params.pop(ZOOM, None)
 		else:
 			Logger().warning("Zoom level not defined")
-			zoom = 1
+			zoom = [1]
 		
 		# Parse bbox
 		bbox = BBox()
@@ -27,7 +27,23 @@ class Seeder():
 		
 		# Generate tiles
 		tilesManager = TilesManager()
-		for i in xrange(zoom):
-			for current_bbox in bbox.zoom(i):
+		for z in zoom:
+			for current_bbox in bbox.zoom(z):
 				aux_dict[BBOX] = current_bbox
 				tilesManager.getTile(aux_dict)
+
+	def parseZoom(self, zoomStr):
+		zoomLevels = []
+		for level in zoomStr.split(','):
+			
+			# range
+			if '-' in level:
+				begin, end = level.split('-')
+				for	z in xrange(int(begin), int(end)):
+					zoomLevels.append(z)
+			
+			# single zoomlevel
+			else:
+				zoomLevels.append(int(level))
+
+		return sorted(set(zoomLevels))
