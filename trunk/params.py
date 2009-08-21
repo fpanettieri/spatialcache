@@ -19,8 +19,8 @@ class ParamsDict(dict):
 		
 		# Set values into the dictionary
 		for kv in str.split("&"):
-			k, v = kv.split("=")
-			self[k] = v
+			pos = str(kv).index('=')
+			self[kv[:pos]] = kv[pos + 1:]
 	
 	def hash(self):
 		"""
