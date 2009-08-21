@@ -16,7 +16,7 @@ class Seeder():
 			params.pop(ZOOM, None)
 		else:
 			Logger().warning("Zoom level not defined")
-			zoom = [1]
+			zoom = 1
 		
 		# Parse bbox
 		bbox = BBox()
@@ -39,7 +39,7 @@ class Seeder():
 			# range
 			if '-' in level:
 				begin, end = level.split('-')
-				for	z in xrange(int(begin), int(end)):
+				for	z in xrange(int(begin), int(end) + 1):
 					zoomLevels.append(z)
 			
 			# single zoomlevel
