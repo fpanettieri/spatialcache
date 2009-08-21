@@ -30,6 +30,7 @@ class TilesManager(Singleton):
 		tile_bytes = ""
 		tile_dir = self.tileDir(params)
 		tile_path = os.path.join(tile_dir, params.hash())
+		response_code = 404
 		
 		try:
 			tile_file = open(tile_path, "r")
@@ -38,7 +39,12 @@ class TilesManager(Singleton):
 			try:
 				# Redirect request to WMS
 				wms_request = self.wms + str(params)
-				tile_bytes = urllib.urlopen(wms_request).read();
+				opener = urllib.FancyURLopener()
+				
+				response = opener.open(wms_request)
+				response_code = response.code
+				
+				tile_bytes = response.fp.read();
 				
 				# Create the path
 				dir = os.path.dirname(tile_path)
@@ -52,7 +58,7 @@ class TilesManager(Singleton):
 			except IOError:
 				Logger().warning(REQUEST_FAILED + wms_request)
 		finally:
-			return tile_bytes
+			return tile_bytes, response_code
 	
 	def tileDir(self, params):
 		"""
