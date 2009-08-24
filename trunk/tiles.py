@@ -6,6 +6,7 @@ from hashlib import md5
 from patterns import Singleton
 from logger import Logger
 
+from constants import http
 from constants.error import REQUEST_FAILED
 
 class TilesManager(Singleton):
@@ -30,11 +31,12 @@ class TilesManager(Singleton):
 		tile_bytes = ""
 		tile_dir = self.tileDir(params)
 		tile_path = os.path.join(tile_dir, params.hash())
-		response_code = 404
+		response_code = http.status.NOT_FOUND
 		
 		try:
 			tile_file = open(tile_path, "r")
 			tile_bytes = tile_file.read()
+			response_code = http.status.OK
 		except:
 			try:
 				# Redirect request to WMS
