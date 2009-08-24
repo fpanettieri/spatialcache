@@ -26,7 +26,7 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 				self.send_header(CONTENT_TYPE, parameters[FORMAT])
 			self.end_headers()
 			
-			if(int(response_code) != OK):
+			if(response_code == OK):
 				self.wfile.write(tile)
 		except:
 			Logger().error(UNEXPECTED_ERROR)
