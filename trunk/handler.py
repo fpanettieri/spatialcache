@@ -6,6 +6,7 @@ from seeder import Seeder
 from cleaner import Cleaner
 from params import ParamsDict
 
+from constants.http.status import OK
 from constants.parameters import FORMAT, CONTENT_TYPE
 from constants.actions import SEED, CLEAN, ACTION
 from constants.error import UNEXPECTED_ERROR
@@ -25,7 +26,7 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 				self.send_header(CONTENT_TYPE, parameters[FORMAT])
 			self.end_headers()
 			
-			if(response_code != 200):
+			if(response_code != OK):
 				self.wfile.write(tile)
 		except:
 			Logger().error(UNEXPECTED_ERROR)
