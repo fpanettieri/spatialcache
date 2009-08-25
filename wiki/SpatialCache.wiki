@@ -25,5 +25,5 @@ Some basic knowledge about WMS and HTTP is assumed.
 ===Requirements:===
 Python >= 2.5
 
-===Recomeded:===
+===Recomended:===
 Installing Psyco will make the server run faster.
