@@ -1,7 +1,7 @@
 == Spatialcache ==
  
 Description:
-Spatialcache is cache server written entirely in python.
+Spatialcache is a cache server written entirely in python.
 It has been designed to be flexible and powerful.
 
 Flexible:
@@ -28,6 +28,6 @@ Getting started:
 Requirements:
 Python >= 2.5
 
-Recomeded:
+Recomended:
 Installing Psyco will make the server run faster.
 
