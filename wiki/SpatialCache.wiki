@@ -1,4 +1,4 @@
-==Spatial Cache==
+==Simple==
 SpatialCache is cache server written entirely in python.
 It has been designed to be flexible and powerful.
 
