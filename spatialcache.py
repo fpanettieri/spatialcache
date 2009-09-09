@@ -6,6 +6,8 @@ from server import CacheServer
 from daemon import Daemon
 from tiles import TilesManager
 
+import pid
+
 class SpatialCache(Daemon):
 	"""
 	Application main class
@@ -27,6 +29,7 @@ class SpatialCache(Daemon):
 			self.daemonize()
 	
 	def start(self):
+		pid.writePID()
 		self.server.start()
 	
 	def stop(self):
@@ -35,9 +38,7 @@ class SpatialCache(Daemon):
 if __name__ == '__main__':
 	
 	from constants.general import CONFIGURATION_FILE, HELP_FILE, VERSION
-	
 	import sys
-	import pid
 	
 	# Import Psyco if available
 	try:
@@ -59,8 +60,6 @@ if __name__ == '__main__':
 		elif sys.argv[i] == "-v":
 			print VERSION
 			sys.exit()
-	
-	pid.writePID()
 
 	cache = SpatialCache()
 	cache.configure(cfgfile)
