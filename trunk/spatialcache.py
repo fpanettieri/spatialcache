@@ -35,7 +35,9 @@ class SpatialCache(Daemon):
 if __name__ == '__main__':
 	
 	from constants.general import CONFIGURATION_FILE, HELP_FILE, VERSION
+	
 	import sys
+	import pid
 	
 	# Import Psyco if available
 	try:
@@ -58,6 +60,8 @@ if __name__ == '__main__':
 			print VERSION
 			sys.exit()
 	
+	pid.writePID()
+
 	cache = SpatialCache()
 	cache.configure(cfgfile)
 	cache.start()
