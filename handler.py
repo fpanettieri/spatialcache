@@ -7,8 +7,8 @@ from cleaner import Cleaner
 from params import ParamsDict
 
 from constants.http.status import OK
-from constants.parameters import FORMAT, CONTENT_TYPE
-from constants.actions import SEED, CLEAN, ACTION
+from constants.parameters import FORMAT, CONTENT_TYPE, ACTION
+from constants.actions import SEED, CLEAN
 from constants.error import UNEXPECTED_ERROR
 
 class CacheRequestHandler(BaseHTTPRequestHandler):
