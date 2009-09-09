@@ -44,7 +44,7 @@ class TilesManager(Singleton):
 				opener = urllib.FancyURLopener()
 				
 				response = opener.open(wms_request)
-				response_code = response.code
+				response_code = OK
 				
 				tile_bytes = response.fp.read();
 				
@@ -57,7 +57,8 @@ class TilesManager(Singleton):
 				tile_file = open(tile_path, "w")
 				tile_file.write(tile_bytes)
 				tile_file.close()
-			except IOError:
+			except:
+				response_code = NOT_FOUND
 				Logger().warning(REQUEST_FAILED + wms_request)
 		finally:
 			return tile_bytes, response_code
