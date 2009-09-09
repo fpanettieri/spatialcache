@@ -1,6 +1,7 @@
 APPLICATION_NAME = "SpatialCache"
-VERSION = "0.5"
+VERSION = "0.5.3"
 CONFIGURATION_FILE = "/etc/spatialcache/configuration.xml"
+PID_FILE = "/var/run/spatialcache"
 HELP_FILE = "help"
 DEFAULT_TILES_PATH = "/tmp/spatialcache"
 DEFAULT_WMS = "http://localhost:8080/"
