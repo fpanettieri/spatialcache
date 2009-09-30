@@ -15,6 +15,8 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 	
 	def do_GET(self):
 		try:
+			Logger().debug("GET")
+			Logger().debug(self.path)
 			# Parse the parameter
 			parameters = ParamsDict()
 			parameters.parse(self.path)
