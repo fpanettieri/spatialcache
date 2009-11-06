@@ -7,9 +7,10 @@ from cleaner import Cleaner
 from params import ParamsDict
 
 from constants.http.status import OK
-from constants.parameters import FORMAT, CONTENT_TYPE, ACTION
+from constants.parameters import FORMAT, CONTENT_TYPE, ACTION, EXCEPTIONS
 from constants.actions import SEED, CLEAN
 from constants.error import UNEXPECTED_ERROR
+from constants.general import DEFAULT_EXCEPTIONS
 
 class CacheRequestHandler(BaseHTTPRequestHandler):
 	
@@ -18,6 +19,7 @@ class CacheRequestHandler(BaseHTTPRequestHandler):
 			# Parse the parameter
 			parameters = ParamsDict()
 			parameters.parse(self.path)
+			parameters[EXCEPTIONS] = DEFAULT_EXCEPTIONS
 			tile, response_code = TilesManager().getTile(parameters)
 			
 			# Send headers
