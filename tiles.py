@@ -28,40 +28,50 @@ class TilesManager(Singleton):
 		"""
 		Returns the tile from the cache if it exists, if not 
 		"""
-		tile_bytes = ""
+		result = ""
 		tile_dir = self.tileDir(params)
 		tile_path = os.path.join(tile_dir, params.hash())
+		
 		response_code = NOT_FOUND
 		
 		try:
 			tile_file = open(tile_path, "r")
-			tile_bytes = tile_file.read()
+			result = tile_file.read()
 			response_code = OK
 		except:
 			try:
+				
 				# Redirect request to WMS
 				wms_request = self.wms + str(params)
+				
 				opener = urllib.FancyURLopener()
 				
 				response = opener.open(wms_request)
 				response_code = OK
 				
-				tile_bytes = response.fp.read();
+				result = response.fp.read();
 				
-				# Create the path
-				dir = os.path.dirname(tile_path)
-				if not os.path.exists(dir):
-					os.makedirs(dir)
+				response_header = result[2:5];
 				
-				# Store tile in cache
-				tile_file = open(tile_path, "w")
-				tile_file.write(tile_bytes)
-				tile_file.close()
+				if(response_header != "xml"):
+					# Create the path
+					dir = os.path.dirname(tile_path)
+					if not os.path.exists(dir):
+						os.makedirs(dir)
+					
+					# Store tile in cache
+					tile_file = open(tile_path, "w")
+					tile_file.write(result)
+					tile_file.close()
+				else:
+					Logger().error(REQUEST_FAILED + wms_request + result)
+					response_code = NOT_FOUND
+					result = ""
 			except:
 				response_code = NOT_FOUND
 				Logger().warning(REQUEST_FAILED + wms_request)
 		finally:
-			return tile_bytes, response_code
+			return result, response_code
 	
 	def tileDir(self, params):
 		"""
