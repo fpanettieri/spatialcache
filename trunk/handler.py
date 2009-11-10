@@ -1,21 +1,31 @@
 from BaseHTTPServer import BaseHTTPRequestHandler
+from os.path import join as joinPath
 
 from logger import Logger
 from tiles import TilesManager
 from seeder import Seeder
 from cleaner import Cleaner
 from params import ParamsDict
+from util import readFile, workingPath
 
 from constants.http.status import OK
+from constants.mime import MIMETYPE_XML
 from constants.parameters import FORMAT, CONTENT_TYPE, ACTION, EXCEPTIONS
 from constants.actions import SEED, CLEAN
 from constants.error import UNEXPECTED_ERROR
-from constants.general import DEFAULT_EXCEPTIONS
+from constants.general import DEFAULT_EXCEPTIONS, CROSSDOMAIN_XML
 
 class CacheRequestHandler(BaseHTTPRequestHandler):
 	
 	def do_GET(self):
 		try:
+			if CROSSDOMAIN_XML in self.path:
+				self.send_response(OK)
+				self.send_header(CONTENT_TYPE, MIMETYPE_XML)
+				self.end_headers()
+				self.wfile.write(readFile(joinPath(workingPath(), CROSSDOMAIN_XML)))
+				return
+
 			# Parse the parameter
 			parameters = ParamsDict()
 			parameters.parse(self.path)
