@@ -2,6 +2,7 @@ import os
 import urllib
 import random
 
+from load_balance import update_server_list
 from hashlib import md5
 
 from patterns import Singleton
@@ -43,7 +44,8 @@ class TilesManager(Singleton):
 			try:
 				
 				# Redirect request to WMS
-				wms_request = random.sample(self.wms.split(","),1)[0] + str(params)
+				wms_request = random.sample(update_server_list(self.wms.split(",")),1)[0] + str(params)
+				
 				opener = urllib.FancyURLopener()
 				
 				response = opener.open(wms_request)
