@@ -1,4 +1,4 @@
-CONTENT_TYPE = "Content-type"
+CONTENT_TYPE = "Content-Type"
 FORMAT = "FORMAT"
 ACTION = "ACTION"
 ZOOM = "ZOOM"
